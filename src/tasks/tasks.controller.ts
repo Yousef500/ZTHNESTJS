@@ -10,6 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/auth/user.entity';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { GetTasksFilterDto } from './dtos/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dtos/update-task-status.dto';
@@ -26,8 +28,8 @@ export class TasksController {
   }
 
   @Post()
-  createTask(@Body() body: CreateTaskDto) {
-    return this.tasksService.createTask(body.title, body.description);
+  createTask(@Body() body: CreateTaskDto, @GetUser() user: User) {
+    return this.tasksService.createTask(body.title, body.description, user);
   }
 
   @Get('/:id')
